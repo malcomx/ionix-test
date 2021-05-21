@@ -1,10 +1,12 @@
 # Documentación
 
-Los endpoint de los servicios son
+Los endpoint de los servicios son:
 
 - Creación de usuario
 > URI: /users
+
 > Metodo: POST
+
 > Request: 
 > >{
 		"name": string,
@@ -23,6 +25,6 @@ Los endpoint de los servicios son
 > URI: /externals/?param={VALUE}
 > Metodo: POST
 
-El archivo ionix-script.sql contiene el control de cambio de base de datos
+El archivo **ionix-script.sql** contiene el control de cambio de base de datos
 
 Quede pendiente con los casos de pruebas 
