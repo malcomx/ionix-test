@@ -5,6 +5,6 @@ CREATE TABLE ionix_user (
     name VARCHAR(50) NOT NULL,
     username VARCHAR(30) NOT NULL,
     email VARCHAR(40) NOT NULL,
-    phone VARCHAR(15),
+    phone VARCHAR(30),
     PRIMARY KEY (id)
 );

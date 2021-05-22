@@ -40,6 +40,6 @@ public class UserEntity implements Serializable {
 	@Column(name = "email", nullable = false, length = 40)
 	private String email;
 	@Basic
-	@Column(name = "phone", nullable = true, length = 15)
+	@Column(name = "phone", nullable = true, length = 30)
 	private String phone;
 }
