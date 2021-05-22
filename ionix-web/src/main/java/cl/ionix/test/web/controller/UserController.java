@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,7 @@ public class UserController {
 	
 	private EmailValidator emailValidator = EmailValidator.getInstance();
 
+	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<DataWebResponse> create(@Valid @RequestBody UserRequest payload, BindingResult errors) {
 		log.info("Creando usuario: {}", payload.toString());
@@ -58,7 +60,8 @@ public class UserController {
 			throw new IonixWebException("--DEFINIR--", ex);
 		}
 	}
-	
+
+	@CrossOrigin
 	@GetMapping
 	public ResponseEntity<DataWebResponse> findAll() {
 		try {
@@ -72,7 +75,8 @@ public class UserController {
 			throw new IonixWebException("--DEFINIR--", ex);
 		}
 	}
-	
+
+	@CrossOrigin
 	@GetMapping(value = "/{email}")
 	public ResponseEntity<DataWebResponse> findByEmail(@PathVariable(name = "email", required = true) String email){//, @Valid Object model, BindingResult errors) {
 		try {
