@@ -18,6 +18,7 @@ import org.springframework.test.annotation.Rollback;
 
 import cl.ionix.test.repository.UserRepository;
 import cl.ionix.test.repository.entity.UserEntity;
+import cl.ionix.test.web.utils.PopulateUserTest;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -94,6 +95,6 @@ public class UserRepositoryTest {
 	
 	@AfterAll
 	public static void done() {
-		log.info("***************** Ejecutados todos los casos*********************");
+		log.info("***************** Ejecutados todos los casos de User Repository *********************");
 	}
 }

@@ -1,6 +1,8 @@
 package cl.ionix.test.web.utils;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -23,35 +25,42 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class IonixSecurityUtils {
 	
+	private Charset charset = StandardCharsets.UTF_8;
+	
+	private enum Algorithms { AES, DES }
+	
 	public String cipher(String value, String key) {
+		Algorithms algorithm = Algorithms.DES;
 		try {
-			DESKeySpec keySpec = new DESKeySpec(key.getBytes("UTF8"));
-			SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
+			if(null == value) throw new IonixWebException("Value is null");
+			if(null == key) throw new IonixWebException("Key is null");
+			DESKeySpec keySpec = new DESKeySpec(key.getBytes(charset.name()));
+			SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(algorithm.name());
 			SecretKey secretKey = keyFactory.generateSecret(keySpec);
-			byte[] clearText = value.getBytes("UTF8");
-			Cipher cipher = Cipher.getInstance("DES");
+			byte[] bytes = value.getBytes(charset.name());
+			Cipher cipher = Cipher.getInstance(algorithm.name());
 			cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-			return Base64.getEncoder().encodeToString(cipher.doFinal(clearText));
+			return Base64.getEncoder().encodeToString(cipher.doFinal(bytes));
 		} catch (InvalidKeySpecException ex) {
-			log.error("Error de cifrado {}", ex.getMessage());
+			log.error("Especicficacion de la llave inválido (KeySpec) - {}", ex.getMessage());
 			throw new IonixWebException(ex.getMessage());
 		} catch (NoSuchAlgorithmException ex) {
-			log.error("Error de cifrado {}", ex.getMessage());
+			log.error("Algoritmo inválido ({}) - {}", algorithm.name(), ex.getMessage());
 			throw new IonixWebException(ex.getMessage());
 		} catch (InvalidKeyException ex) {
-			log.error("Error de cifrado {}", ex.getMessage());
+			log.error("Llave Inválida (key) {}", ex.getMessage());
 			throw new IonixWebException(ex.getMessage());
 		} catch (UnsupportedEncodingException ex) {
-			log.error("Error de cifrado {}", ex.getMessage());
+			log.error("Encoding no soportado ({}) - {}", charset.name(), ex.getMessage());
 			throw new IonixWebException(ex.getMessage());
 		} catch (IllegalBlockSizeException ex) {
-			log.error("Error de cifrado {}", ex.getMessage());
+			log.error("Bloque del value/key a cifrar es ilegal {}", ex.getMessage());
 			throw new IonixWebException(ex.getMessage());
 		} catch (BadPaddingException ex) {
-			log.error("Error de cifrado {}", ex.getMessage());
+			log.error("Padding del value/key es incorrecto{}", ex.getMessage());
 			throw new IonixWebException(ex.getMessage());
 		} catch (NoSuchPaddingException ex) {
-			log.error("Error de cifrado {}", ex.getMessage());
+			log.error("Esquema del Padding no esta disponible {}", ex.getMessage());
 			throw new IonixWebException(ex.getMessage());
 		}
 	}
