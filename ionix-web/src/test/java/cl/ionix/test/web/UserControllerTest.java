@@ -40,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class UserControllerTest {
+class UserControllerTest {
 
 	@Setter
 	@Autowired
@@ -52,14 +52,14 @@ public class UserControllerTest {
 	private static PopulateUserTest dataUser;
 	
 	@BeforeAll
-	public static void init() {
+	static void init() {
 		dataUser = new PopulateUserTest();
 	}
 
 	@Test
 	@Order(1)
 	@DisplayName("Test de inyección de dependencia UserRepository")
-	public void contextLoads() throws NullPointerException {
+	void contextLoads() throws NullPointerException {
 		assertThat(repository).isNotNull();
 	}
 	
@@ -68,7 +68,7 @@ public class UserControllerTest {
 //	@Commit // Descomentar para cargar datos persistentes en la tabla 
 	@Order(2)
 	@DisplayName("Test Create User full fill (Success)")
-	public void create_Success_FullFill() throws Exception{
+	void create_Success_FullFill() throws Exception{
 		// Obtiene el payload del request
 		String body = dataUser.getStringObject();
 		mock.perform(
@@ -85,7 +85,7 @@ public class UserControllerTest {
 //	@Commit // Descomentar para cargar datos persistentes en la tabla 
 	@Order(3)
 	@DisplayName("Test Create User without phone (Success)")
-	public void create_Success_WithoutPhone() throws Exception{
+	void create_Success_WithoutPhone() throws Exception{
 		// Obtiene el payload del request
 		UserRequest request = dataUser.fillRequest();
 		request.setPhone(null);
@@ -111,7 +111,7 @@ public class UserControllerTest {
 	@Rollback
 	@Order(4)
 	@DisplayName("Test Create User: name required (Fails)")
-	public void create_Fail_NameRequired() throws Exception {
+	void create_Fail_NameRequired() throws Exception {
 		// Obtiene el payload del request
 		UserRequest request = dataUser.fillRequest();
 		// Setea a null el nombre
@@ -132,7 +132,7 @@ public class UserControllerTest {
 	@Rollback
 	@Order(5)
 	@DisplayName("Test Create User: Username required (Fails)")
-	public void create_Fail_UsernameRequired() throws Exception {
+	void create_Fail_UsernameRequired() throws Exception {
 		// Obtiene el payload del request
 		UserRequest request = dataUser.fillRequest();
 		// Setea a null el nombre de usuario
@@ -153,7 +153,7 @@ public class UserControllerTest {
 	@Rollback
 	@Order(6)
 	@DisplayName("Test Create User: email required (Fails)")
-	public void create_Fail_EmailRequired() throws Exception {
+	void create_Fail_EmailRequired() throws Exception {
 		// Obtiene el payload del request
 		UserRequest request = dataUser.fillRequest();
 		// Setea a null el email
@@ -174,7 +174,7 @@ public class UserControllerTest {
 	@Rollback
 	@Order(7)
 	@DisplayName("Test Create User: email invalid (Fails)")
-	public void create_Fail_EmailInvalid() throws Exception {
+	void create_Fail_EmailInvalid() throws Exception {
 		// Obtiene el payload del request
 		UserRequest request = dataUser.fillRequest();
 		// Modifca el email
@@ -195,7 +195,7 @@ public class UserControllerTest {
 	@Rollback
 	@Order(8)
 	@DisplayName("Test Create User: email duplicated (Fails)")
-	public void create_Fail_EmailDuplicate() throws Exception {
+	void create_Fail_EmailDuplicate() throws Exception {
 		// Consulta los usuario registrados en db
 		UserEntity userExists = this.repository.findAll().stream().findAny().orElse(null);
 		if(null != userExists) {
@@ -225,7 +225,7 @@ public class UserControllerTest {
 	@Test
 	@Order(9)
 	@DisplayName("Test Find All")
-	public void findAll() throws Exception {
+	void findAll() throws Exception {
 		mock.perform(get("/users"))
 			.andExpect(status().isOk())
 			.andDo(print());
@@ -234,7 +234,7 @@ public class UserControllerTest {
 	@Test
 	@Order(10)
 	@DisplayName("Test Find user by email (Success)")
-	public void findByEmail_Success() throws Exception {
+	void findByEmail_Success() throws Exception {
 		UserEntity user = this.repository.findAll().stream().findAny().orElse(null);
 		if(null != user) {
 			mock.perform(get("/users/" + user.getEmail()))
@@ -249,7 +249,7 @@ public class UserControllerTest {
 	@Test
 	@Order(11)
 	@DisplayName("Test Find user by email: email invalido (Fail)")
-	public void findByEmail_Fail1() throws Exception {
+	void findByEmail_Fail1() throws Exception {
 		mock.perform(get("/users/correo.invalido.gmail.com"))
 			.andExpect(status().is5xxServerError())
 			.andExpect(jsonPath("$.errors[0].code", equalTo("user.email.not-valid")))
@@ -259,7 +259,7 @@ public class UserControllerTest {
 	@Test
 	@Order(12)
 	@DisplayName("Test Find user by email: email no existe en db (Fail)")
-	public void findByEmail_Fail2() throws Exception {
+	void findByEmail_Fail2() throws Exception {
 		Faker faker = new Faker();
 		mock.perform(get("/users/" + faker.internet().emailAddress(faker.name().username() + "-" + RandomUtils.nextInt())))
 			.andExpect(status().is5xxServerError())

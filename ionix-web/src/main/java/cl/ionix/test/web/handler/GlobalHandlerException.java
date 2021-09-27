@@ -36,7 +36,7 @@ public class GlobalHandlerException {
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	public ResponseEntity<DataWebResponse> handleGracaException(IonixWebException ex, WebRequest request) {
 		log.warn(ex.getMessage());
-		return new ResponseEntity<DataWebResponse>(this.responseWebUtils.buildErrorResponse(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(this.responseWebUtils.buildErrorResponse(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
     @ExceptionHandler({
@@ -49,27 +49,27 @@ public class GlobalHandlerException {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	public ResponseEntity<DataWebResponse> handleBadRequest(Exception ex, WebRequest request){
     	log.error(ex.getMessage());
-		return new ResponseEntity<DataWebResponse>(this.responseWebUtils.buildErrorResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(this.responseWebUtils.buildErrorResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
 	}
 
     @ExceptionHandler(UnsupportedMediaTypeStatusException.class)
     @ResponseStatus(value = HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     public ResponseEntity<DataWebResponse> handleUnssuprtedMediaType(UnsupportedMediaTypeStatusException ex, WebRequest request){
     	log.error(ex.getMessage());
-		return new ResponseEntity<DataWebResponse>(this.responseWebUtils.buildErrorResponse(ex.getMessage()), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+		return new ResponseEntity<>(this.responseWebUtils.buildErrorResponse(ex.getMessage()), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 
 	@ExceptionHandler(ServerErrorException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ResponseEntity<DataWebResponse> handleServerError(RuntimeException ex, WebRequest request) {
 		log.error(ex.getMessage());
-		return new ResponseEntity<DataWebResponse>(this.responseWebUtils.buildErrorResponse(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(this.responseWebUtils.buildErrorResponse(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(NoHandlerFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ResponseEntity<DataWebResponse> handleNotFound(Exception ex, WebRequest request) {
 		log.error(ex.getMessage());
-		return new ResponseEntity<DataWebResponse>(this.responseWebUtils.buildErrorResponse(ex.getMessage()), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(this.responseWebUtils.buildErrorResponse(ex.getMessage()), HttpStatus.NOT_FOUND);
 	}
 }

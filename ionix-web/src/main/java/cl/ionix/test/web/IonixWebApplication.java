@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan(value = { "cl.ionix.test" })
-
 @SpringBootApplication
 public class IonixWebApplication {
 
